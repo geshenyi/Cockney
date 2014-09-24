@@ -9,11 +9,12 @@ router.get('/', function(req, res) {
 });
 
 router.get('/trigger', function(req,res){
-    console.log('in trigger');
-    rest.post("http://int.testing.stubcorp.dev/jenkins/job/TestJenkinsApi/buildWithParameters",{data:{token:'testapi',testStringParam:'triggerNode'}}).on('complete',function(data,response){
-        console.log(response.statusCode);
-    });
-    res.json({"message":"test"});
+//    console.log('in trigger');
+//    rest.post("http://int.testing.stubcorp.dev/jenkins/job/TestJenkinsApi/buildWithParameters",{data:{token:'testapi',testStringParam:'triggerNode'}}).on('complete',function(data,response){
+//        console.log(response.statusCode);
+//    });
+//    res.json({"message":"test"});
+    res.render('error',{});
 });
 
 module.exports = router;

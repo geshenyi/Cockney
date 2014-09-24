@@ -237,3 +237,73 @@
     font-family: 'Shadows Into Light';
     font-size: 5rem;
 }
+
+.content-section {
+    text-align: center;
+    background-image: linear-gradient(to bottom,#F1F1F1 0,#68A5CE 100%);
+}
+
+.clickable-tab-row{
+    /*border-top: 1px solid black;*/
+    border-bottom: 1px solid black;
+    padding: 3px;
+}
+
+.clickable-tab {
+    cursor: pointer;
+    background-color: #F0EDED;
+    font-size: 3rem;
+    font-style: italic;
+    margin-left: 30px;
+}
+
+.clickable-tab:hover  {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.body-section{
+    height: 500px;
+    border: 1px solid lightgray;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 100px;
+}
+
+.env-type-canary {
+    font-size: 3rem;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.env-type-canary:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+
+.env-type-prod {
+    margin-left: 20px;
+    margin-right: 0px;
+    font-size: 3rem;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.env-type-prod:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+paper-radio-group.blue paper-radio-button::shadow #ink[checked] {
+    color: #4285f4;
+}
+
+paper-radio-group.blue paper-radio-button::shadow #onRadio {
+    background-color: #4285f4;
+}
+
+paper-radio-button {
+    display: block;
+}
