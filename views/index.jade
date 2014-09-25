@@ -14,22 +14,37 @@ block content
                 img(src='/images/smoke.jpg',class='img-rounded img-responsive')
             div(class='col-xs-7 col-sm-7')
               span(class='header-app-title') Riesling Smoke Test
-  div(class='row clickable-tab-row')
-    div(class='col-sm-offset-1 col-sm-2 clickable-tab') History
-    div(class='col-sm-2 clickable-tab') Running
+  div(class='row')
+    div(class='col-sm-12')
+      paper-tabs(selected='1')
+        paper-tab History
+        paper-tab Running
+    //div(class='col-sm-offset-1 col-sm-2 clickable-tab') History
+    //div(class='col-sm-2 clickable-tab') Running
   div(class='row body-section')
-    div(class='col-sm-12 text-center')
-        h4 Run Smoke Test On
-        paper-radio-group(selected='always')
-          paper-radio-button(name='Canary',label='Canary')
-          paper-radio-button(name='Prod',label='Prod')
-
+    div(class='col-sm-12')
+      div(class='row')
+        div(class='col-sm-offset-4 col-sm-8')
+          h4 Run Smoke Test On
+          paper-radio-group(selected='Canary',id='runserver')
+            paper-radio-button(name='Canary',label='Canary')
+            paper-radio-button(name='Prod',label='Prod')
+      div(class='row voffset3')
+        div(class='col-sm-offset-4 col-sm-8 padding-left0px padding-right0px')
+          h4(class='col-sm-1 voffset3 ecomm-word') eComm
+          paper-input(class='col-sm-1 padding-left0px padding-right0px',label='Major',floatingLabel,id='major')
+          h4(class='col-sm-1 ecomm-period') .
+          paper-input(class='col-sm-1 padding-left0px padding-right0px',label='Minor',floatingLabel,id='minor')
+      div(class='row voffset3')
+        div(class='col-sm-3')
+          smoke-job-block
+          //button(onclick='outputTextInfo()') Trigger Button
 block customjs
   script(type='text/javascript',src='/javascripts/main-page.js')
 
 
 
      //div(class='col-sm-offset-4 col-sm-1 env-type-canary') Canary
-     //div(class='col-sm-offset-1 col-sm-1 env-type-prod') Prod
-  //button(onclick='triggerJob()',value='Trigger') Trigger Button
+     /*div(class='col-sm-offset-1 col-sm-1 env-type-prod') Prod*/
+     //button(onclick='triggerJob()',value='Trigger') Trigger Button
 
