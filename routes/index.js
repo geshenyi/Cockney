@@ -5,8 +5,17 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express'});
 });
+
+router.get('/history', function(req,res){
+   res.render('history', {});
+});
+
+router.get('/running', function(req,res){
+    res.render('running', {});
+});
+
 
 router.get('/trigger', function(req,res){
 //    console.log('in trigger');
