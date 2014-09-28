@@ -1,28 +1,36 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<polymer-element name="smoke-job-block" noscript>
+<polymer-element name="smoke-job-block" attributes="upperBgColor lowerBgColor">
     <template>
         <style>
             #content-block {
-                border: 3px solid rgb(82, 81, 81);
+                border: 4px solid rgb(82, 81, 81);
+                /*border-bottom: 4px solid rgb(82, 81, 81);*/
+                /*border-left: 4px solid rgb(82, 81, 81);*/
+                /*border-right: 4px solid rgb(82, 81, 81);*/
                 width: 100%;
-                height: 300px;
+                height: 310px;
 
             }
             #upper-block {
-                background-color: #A5F6E3;
+                background-color: {{upperBgColor}};
                 height:270px;
-                text-align: center;
-                vertical-align: bottom;
                 /*border-bottom: 3px solid black;*/
             }
             #lower-block {
-                background-color: #c9c9c9;
-                height:30px;
+                background-color: {{lowerBgColor}};
+                height:40px;
             }
         </style>
         <div vertical layout id="content-block">
-            <div id="upper-block">Buy API</div>
-            <div id="lower-block">Beta (flex)</div>
+            <div id="upper-block"><content select=".upper-block"></content></div>
+            <div id="lower-block"><content select=".lower-block"></content></div>
         </div>
     </template>
+    <script>
+        Polymer({
+            upperBgColor: "#A5F6E3",
+            lowerBgColor: "#c9c9c9"
+
+        });
+    </script>
 </polymer-element>
