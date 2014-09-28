@@ -1,50 +1,124 @@
 extends layout
 
 block content
-  div#navBarDiv
-    nav(class='navbar-default',role='navigation',style="background-color: #ffffff")
-      div.container-fluid
-        div.navbar-header
-          div.row
-            div(class='col-xs-4 col-sm-4 col-lg-3 logo-area voffset2')
-              div(class='col-xs-5 col-sm-5 link-cursor" ng-click="backToPortal()')
-                a(href='/')
-                  img(src='/images/execution_logo.jpg',class='img-rounded img-responsive',width='250px')
-              div(class='col-xs-5 col-sm-5 voffset1')
-                img(src='/images/smoke.jpg',class='img-rounded img-responsive')
-            div(class='col-xs-7 col-sm-7')
-              span(class='header-app-title') Riesling Smoke Test
-  div(class='row')
-    div(class='col-sm-12')
-      paper-tabs(selected='1')
-        paper-tab History
-        paper-tab Running
-    //div(class='col-sm-offset-1 col-sm-2 clickable-tab') History
-    //div(class='col-sm-2 clickable-tab') Running
-  div(class='row body-section')
-    div(class='col-sm-12')
-      div(class='row')
-        div(class='col-sm-offset-4 col-sm-8')
-          h4 Run Smoke Test On
-          paper-radio-group(selected='Canary',id='runserver')
-            paper-radio-button(name='Canary',label='Canary')
-            paper-radio-button(name='Prod',label='Prod')
-      div(class='row voffset3')
-        div(class='col-sm-offset-4 col-sm-8 padding-left0px padding-right0px')
-          h4(class='col-sm-1 voffset3 ecomm-word') eComm
-          paper-input(class='col-sm-1 padding-left0px padding-right0px',label='Major',floatingLabel,id='major')
-          h4(class='col-sm-1 ecomm-period') .
-          paper-input(class='col-sm-1 padding-left0px padding-right0px',label='Minor',floatingLabel,id='minor')
-      div(class='row voffset3')
-        div(class='col-sm-3')
-          smoke-job-block
-          //button(onclick='outputTextInfo()') Trigger Button
+    form(id='configForm')
+        include ./usui-config
+        include ./buyapi-config
+        div#navBarDiv
+            nav(class='navbar-default',role='navigation',style="background-color: #ffffff")
+                div.container-fluid
+                    div.navbar-header
+                        div.row
+                            div(class='col-xs-4 col-sm-4 col-lg-3 logo-area voffset2')
+                                div(class='col-xs-5 col-sm-5 link-cursor" ng-click="backToPortal()')
+                                    a(href='/')
+                                        img(src='/images/execution_logo.jpg',class='img-rounded img-responsive',width='250px')
+                                div(class='col-xs-5 col-sm-5 voffset1')
+                                    img(src='/images/smoke.jpg',class='img-rounded img-responsive')
+                            div(class='col-xs-7 col-sm-7')
+                                span(class='header-app-title') Riesling Smoke Test
+        div(class='row')
+            div(class='col-sm-12')
+                paper-tabs(selected='0',onchange='')
+                    paper-tab(id='configTab') Configuration
+                    paper-tab(id='historyTab') History
+                    paper-tab(id='runningTab') Running
+            //div(class='col-sm-offset-1 col-sm-2 clickable-tab') History
+            //div(class='col-sm-2 clickable-tab') Running
+                                                                              div(class='row left0 right0')
+            div(class='col-sm-4 padding-left0px padding-right0px')
+                smoke-job-block(upperBgColor='#ffd9d1',lowerBgColor='#ff5252')
+                    div.upper-block
+                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
+                            div.flipper
+                                div.front
+                                    div(class='text-center')
+                                        h1(class='italic-font') Buy API
+                                div.back(style='background-color:white')
+                                    div(vertical layout)
+                                        div
+                                            paper-input(label='Event ID',floatingLabel)
+                    div(class='lower-block text-right')
+                        core-icon-button(class="green",icon="settings",id='buyapi_setting' onclick="toggleDialog('buyApiConfigDialog')")
+                        core-icon-button(class="green",icon="av:play-arrow",id='buyapi')
+            div(class='col-sm-4 padding-left0px padding-right0px')
+                smoke-job-block(upperBgColor='#ffffbe',lowerBgColor='#ffeb3b')
+                    div.upper-block
+                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
+                            div.flipper
+                                div.front
+                                    div(class='text-center')
+                                        h1(class='italic-font') Sell Api
+                                div.back(style='background-color:white') Sell Configuration
+                    div(class='lower-block text-right')
+                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
+                        core-icon-button(class="green",icon="av:play-arrow")
+            div(class='col-sm-4 padding-left0px padding-right0px')
+                smoke-job-block(upperBgColor='#acffff',lowerBgColor='#03A9F4')
+                    div.upper-block
+                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
+                            div.flipper
+                                div.front
+                                    div(class='text-center')
+                                        h1(class='italic-font') Social Api
+                                div.back(style='background-color:white') Social Configuration
+                    div(class='lower-block text-right')
+                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
+                        core-icon-button(class="green",icon="av:play-arrow")
+        div(class='row left0 right0')
+            div(class='col-sm-12 padding-right0px padding-left0px')
+                smoke-job-block(upperBgColor='rgba(238, 238, 238, 0.57)')
+                    div.upper-block
+                        div(class='row voffset3')
+                            div(class='col-sm-offset-4 col-sm-8')
+                                h4(class="italic-font",style='font-size:3rem') Run Smoke Test On
+                                paper-radio-group(selected='Canary',id='runserver',style='font-size:2rem')
+                                    paper-radio-button(name='Canary',label='Canary')
+                                    paper-radio-button(name='Prod',label='Prod')
+                        div(class='row')
+                            div(class='col-sm-offset-4 col-sm-8 padding-left0px padding-right0px')
+                                h4(class='col-sm-1 voffset3 ecomm-word italic-font',style="font-size:2.5rem") eComm
+                                paper-input(class='col-sm-1 padding-right0px',style='font-size:2rem',label='Major',floatingLabel,id='major')
+                                h4(class='col-sm-1 ecomm-period') .
+                                paper-input(class='col-sm-1 padding-left0px padding-right0px',style='font-size:2rem',label='Minor',floatingLabel,id='minor')
+                    div(class='lower-block text-right')
+                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
+                        core-icon-button(class="green",icon="av:play-arrow")
+        div(class='row left0 right0')
+            div(class='col-sm-4 padding-left0px padding-right0px')
+                smoke-job-block(upperBgColor='#ffc2ff',lowerBgColor='#7e57c2')
+                    div.upper-block
+                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
+                            div.flipper
+                                div.front
+                                    div(class='text-center')
+                                        h1(class='italic-font') Buy Api
+                                div.back(style='background-color:white')
+                                    div(vertical layout)
+                                        div
+                                            paper-input(label='Event ID',floatingLabel)
+                    div(class='lower-block text-right')
+                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
+                        core-icon-button(class="green",icon="av:play-arrow",id='buyapi')
+            div(class='col-sm-4 padding-left0px padding-right0px')
+                smoke-job-block(upperBgColor='#b9f6ca',lowerBgColor='#1de9b6')
+                    div.upper-block
+                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
+                            div.flipper
+                                div.front
+                                    div(class='text-center')
+                                        h1(class='italic-font') Sell Api
+                                div.back(style='background-color:white') Sell Configuration
+                    div(class='lower-block text-right')
+                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
+                        core-icon-button(class="green",icon="av:play-arrow")
+            div(class='col-sm-4 padding-left0px padding-right0px')
+                smoke-job-block(upperBgColor='#ffd18c',lowerBgColor='#ffac30')
+                    div.upper-block
+                        div(style='text-align:center;',id='usui_front')
+                            h1 US UI
+                    div(class='lower-block text-right')
+                        core-icon-button(class="green",icon="settings",id='usui_setting' onclick="toggleDialog('usuiConfigDialog')")
+                        core-icon-button(class="green",icon="av:play-arrow")
 block customjs
-  script(type='text/javascript',src='/javascripts/main-page.js')
-
-
-
-     //div(class='col-sm-offset-4 col-sm-1 env-type-canary') Canary
-     /*div(class='col-sm-offset-1 col-sm-1 env-type-prod') Prod*/
-     //button(onclick='triggerJob()',value='Trigger') Trigger Button
-
+    script(type='text/javascript',src='/javascripts/main-page.js')

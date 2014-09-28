@@ -1,0 +1,40 @@
+paper-dialog(heading='US UI Config',transition='paper-dialog-transition-bottom',id='usuiConfigDialog')
+    div(class='row')
+        div(class='col-sm-12')
+            paper-input(label='Browser',floatingLabel,value='')
+    div(class='row')
+        paper-checkbox(id='usui_sellticket',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Sell Ticket
+    div(class='row')
+        paper-checkbox(id='usui_checkout',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Check Out Flow
+    div(class='row')
+        div(class='col-sm-12')
+            paper-input(label='Check Out Listing ID',floatingLabel,value='')
+    div(class='row')
+        paper-checkbox(id='usui_ups',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Delivery By UPS
+        paper-checkbox(id='usui_newpdf',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') Delivery By New PDF
+        paper-checkbox(id='usui_sfrpdf',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') Delivery By SFR PDF
+    div(class='row')
+        paper-checkbox(id='usui_aeg',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') AEG
+        paper-checkbox(id='usui_cstool',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') CS Tool
+        paper-checkbox(id='usui_eventdisplay',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') Event Display
+    div(class='row')
+        paper-checkbox(id='usui_searchevents',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Search Events
+        paper-checkbox(id='usui_abl',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') Auto Bulk Upload
+        paper-checkbox(id='usui_cswebtool',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') CS Web Tool
+    div(class='row')
+        paper-checkbox(id='usui_sfrbarcode',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') SFR Barcode
+    div(class='row text-right')
+        paper-button(class='col-sm-offset-8 col-sm-2 padding-left0px padding-right0px',label='Close',affirmative)
+        paper-button(class='col-sm-2 padding-left0px padding-right0px text-left',label='Save',affirmative,autofocus)

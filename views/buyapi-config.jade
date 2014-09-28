@@ -1,0 +1,30 @@
+paper-dialog(heading='Buy API Config',transition='paper-dialog-transition-bottom',id='buyApiConfigDialog')
+    div(class='row')
+        paper-checkbox(id='buyapi_testv1',class='col-sm-1 padding-right0px',onchange='testv1Clicked()')
+        h4(style='padding-top:10px',class='col-sm-4 padding-left0px') Run V1 Api Script
+    div(class='row')
+        div(class='col-sm-12')
+            paper-input(label='Event ID For V1',floatingLabel,value='',class='hide',id='eventidv1')
+    div(class='row')
+        paper-checkbox(id='buyapi_testv2',class='col-sm-1 padding-right0px',onchange='testv2Clicked()')
+        h4(style='padding-top:10px',class='col-sm-4 padding-left0px') Run V2 Api Script
+    div(class='row')
+        div(class='col-sm-12')
+            paper-input(label='Event ID For V2',floatingLabel,value='',class='hide',id='eventidv2')
+    div(class='row')
+        div(class='col-sm-4')
+            h4 Add Discount
+            paper-radio-group(class='blue',selected="no")
+                paper-radio-button(name="yes",label="Yes")
+                paper-radio-button(name="no",label="No")
+        div(class='col-sm-4')
+            h4 Payment Type
+            paper-radio-group(class='blue',selected="creditcard")
+                paper-radio-button(name="creditcard",label="Credit Card")
+                paper-radio-button(name="paypal",label="PayPal")
+        div(class='col-sm-4')
+            h4 Checkout Tickets
+            paper-radio-group(class='blue',selected="yes")
+                paper-radio-button(name="yes",label="Yes")
+                paper-radio-button(name="no",label="No")
+
