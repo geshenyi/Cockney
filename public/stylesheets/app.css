@@ -405,7 +405,7 @@ paper-button[autofocus] {
 }
 
 #owl-demo .clicked {
-    background: #989898;
+    background: #00E676;
     padding: 30px 0px;
     margin: 10px;
     color: #FFF;
@@ -418,7 +418,7 @@ paper-button[autofocus] {
 }
 
 #owl-demo .item:hover {
-    background: #989898;
+    background: #00E676;
     text-decoration: underline;
 }
 
@@ -444,7 +444,7 @@ paper-button[autofocus] {
 }
 
 .trigger-btn {
-    background-color: #D7D7D7;
+    background-color: #2196F3;
     padding: 10px;
 }
 
@@ -453,12 +453,12 @@ paper-button[autofocus] {
 }
 
 #history-left-panel .clicked {
-    background-color: #989898;
+    background-color: #0D47A1;
     padding: 10px;
 }
 
 .trigger-btn:hover {
-    background-color: #989898;
+    background-color: #0D47A1;
     padding: 10px;
     cursor: pointer;
 }
@@ -557,4 +557,11 @@ body {
 
 paper-dropdown {
     top: 10px;
+}
+
+.details-card {
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+    margin-top: 40px;
+    height: 400px;
+    margin-left: 50px;
 }
