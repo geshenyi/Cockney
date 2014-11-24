@@ -545,3 +545,16 @@ paper-button[autofocus] {
     }
 }
 
+#header-toolbar {
+    height: 50px;
+    display: block;
+    background-color: #4CAF50;
+}
+
+body {
+    background-color: #E8F5E9;
+}
+
+paper-dropdown {
+    top: 10px;
+}

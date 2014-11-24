@@ -23,25 +23,33 @@ block content
                                 paper-radio-group(class=val.jenkinsName+'Param'+' blue',id=val.jenkinsName+'-'+param.name,selected=param.choices[0])
                                     each choice in param.choices
                                         paper-radio-button(name=choice,label=choice)
-    div#navBarDiv
-        nav(class='navbar-default',role='navigation',style="background-color: #ffffff")
-            div.container-fluid
-                div.navbar-header
-                    div(class='row left0 right0')
-                        div(class='col-xs-4 col-sm-4 col-lg-3 logo-area voffset2 padding-left0px padding-right0px')
-                            div(class='col-xs-5 col-sm-5 link-cursor" ng-click="backToPortal()')
-                                a(href='/')
-                                    img(src='/images/execution_logo.jpg',class='img-rounded img-responsive',width='250px')
-                            div(class='col-xs-5 col-sm-5 voffset1')
-                                img(src='/images/smoke.jpg',class='img-rounded img-responsive')
-                        div(class='col-xs-7 col-sm-7')
-                            span(class='header-app-title') Riesling Smoke Test
-    div(class='row left0 right0')
-        div(class='col-sm-12 padding-left0px padding-right0px')
-            paper-tabs(selected='0',onchange='')
-                paper-tab(id='configTab') Configuration
-                paper-tab(id='historyTab') History
-                paper-tab(id='runningTab') Running
+    core-toolbar#header-toolbar
+        paper-menu-button
+            paper-icon-button(icon='menu')
+            paper-dropdown(class='dropdown',layered)
+                core-menu(class='menu',selected='0')
+                    paper-item(id='configTab') Configuration
+                    paper-item(id='historyTab') History
+
+    //div#navBarDiv
+    //    nav(class='navbar-default',role='navigation',style="background-color: #ffffff")
+    //        div.container-fluid
+    //            div.navbar-header
+    //                div(class='row left0 right0')
+    //                    div(class='col-xs-4 col-sm-4 col-lg-3 logo-area voffset2 padding-left0px padding-right0px')
+    //                        div(class='col-xs-5 col-sm-5 link-cursor" ng-click="backToPortal()')
+    //                            a(href='/')
+    //                                img(src='/images/execution_logo.jpg',class='img-rounded img-responsive',width='250px')
+    //                        div(class='col-xs-5 col-sm-5 voffset1')
+    //                            img(src='/images/smoke.jpg',class='img-rounded img-responsive')
+    //                    div(class='col-xs-7 col-sm-7')
+    //                        span(class='header-app-title') Riesling Smoke Test
+    //div(class='row left0 right0')
+    //    div(class='col-sm-12 padding-left0px padding-right0px')
+    //        paper-tabs(selected='0',onchange='')
+    //            paper-tab(id='configTab') Configuration
+    //            paper-tab(id='historyTab') History
+    //            paper-tab(id='runningTab') Running
     div(class='row left0 right0')
         div(class='col-sm-12 padding-right0px padding-left0px')
             smoke-job-block(upperBgColor='rgba(238, 238, 238, 0.57)')

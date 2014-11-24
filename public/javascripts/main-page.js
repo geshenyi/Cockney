@@ -47,16 +47,16 @@ $(document).ready(function(){
     historyTab.addEventListener('click',function(e){
         window.location.href = "/history";
     });
-    runningTab.addEventListener('click',function(e){
-//        $.get('/running',function(data){
-//            var $dom = $(document.createElement("html"));
-//            $dom[0].innerHTML = data;
-//            var $body = $dom.find("body");
-//
-//            $('body').html($body);
-//        })
-        window.location.href = "/running";
-    });
+//    runningTab.addEventListener('click',function(e){
+////        $.get('/running',function(data){
+////            var $dom = $(document.createElement("html"));
+////            $dom[0].innerHTML = data;
+////            var $body = $dom.find("body");
+////
+////            $('body').html($body);
+////        })
+//        window.location.href = "/running";
+//    });
 });
 
 function testv1Clicked(){
