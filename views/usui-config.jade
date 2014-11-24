@@ -1,7 +1,9 @@
 paper-dialog(heading='US UI Config',transition='paper-dialog-transition-bottom',id='usuiConfigDialog')
     div(class='row')
         div(class='col-sm-12')
-            paper-input(label='Browser',floatingLabel,value='')
+            paper-dropdown-menu(label="Browser")
+                paper-item(label="firefox")
+                paper-item(label="chrome")
     div(class='row')
         paper-checkbox(id='usui_sellticket',class='col-sm-1 padding-right0px')
         h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Sell Ticket

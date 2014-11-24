@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var history = require('./routes/history');
 var debug = require('debug')('cockney');
 
 var app = express();
@@ -24,7 +24,7 @@ app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/history', history);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -32,6 +32,8 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+
+
 
 /// error handlers
 
@@ -62,5 +64,13 @@ app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
 });
+
+io = require('socket.io').listen(server);
+
+io.on('connection',function(socket){
+   console.log('a user connected');
+});
+
+
 
 module.exports = app;

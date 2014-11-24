@@ -21,10 +21,18 @@ html
         link(rel='import', href='/bower_components/paper-button/paper-button.html')
         link(rel='import', href='/bower_components/paper-dropdown-menu/paper-dropdown-menu.html')
         link(rel='import', href='/bower_components/paper-item/paper-item.html')
+        link(rel='stylesheet', href='/stylesheets/owl.carousel.css')
+        link(rel='stylesheet', href='/stylesheets/owl.theme.css')
+        link(rel='stylesheet', href='/stylesheets/owl.transitions.css')
     body
 
         block content
+        script(type='text/javascript',src='/socket.io/socket.io.js')
         script(type='text/javascript',src='/javascripts/jquery-1.11.0.js')
+        script(type='text/javascript',src='/javascripts/jquery-ui.min.js')
+        script(type='text/javascript',src='/javascripts/jquery.noty.packaged.min.js')
         script(type='text/javascript',src='/javascripts/bootstrap.js')
-
+        script(type='text/javascript',src='/javascripts/moment.js')
+        script(type='text/javascript',src='/javascripts/notify.min.js')
+        script(type='text/javascript',src='/javascripts/utils.js')
         block customjs

@@ -1,124 +1,96 @@
 extends layout
 
 block content
-    form(id='configForm')
-        include ./usui-config
-        include ./buyapi-config
-        div#navBarDiv
-            nav(class='navbar-default',role='navigation',style="background-color: #ffffff")
-                div.container-fluid
-                    div.navbar-header
-                        div.row
-                            div(class='col-xs-4 col-sm-4 col-lg-3 logo-area voffset2')
-                                div(class='col-xs-5 col-sm-5 link-cursor" ng-click="backToPortal()')
-                                    a(href='/')
-                                        img(src='/images/execution_logo.jpg',class='img-rounded img-responsive',width='250px')
-                                div(class='col-xs-5 col-sm-5 voffset1')
-                                    img(src='/images/smoke.jpg',class='img-rounded img-responsive')
-                            div(class='col-xs-7 col-sm-7')
-                                span(class='header-app-title') Riesling Smoke Test
-        div(class='row')
-            div(class='col-sm-12')
-                paper-tabs(selected='0',onchange='')
-                    paper-tab(id='configTab') Configuration
-                    paper-tab(id='historyTab') History
-                    paper-tab(id='runningTab') Running
-            //div(class='col-sm-offset-1 col-sm-2 clickable-tab') History
-            //div(class='col-sm-2 clickable-tab') Running
-                                                                              div(class='row left0 right0')
+    paper-dialog(heading='Maui Report',trasition='paper-dialog-transition-center',id='reportDialog',width='1400px')
+        div#reportContent
+            object(type="text/html",data="",width="1400px",height="800px",style="overflow:auto;",id="reportObject")
+    each val,index in jobParams
+        paper-dialog(heading=val.displayName+' Config',transition='paper-dialog-transition-bottom',id=val.jenkinsName+'-ConfigDialog')
+            each param in val.params
+                if param.type == "stringProperties"
+                    div(class='row left0 right0')
+                        div(class='col-sm-12 padding-left0px padding-right0px')
+                            paper-input(label=param.name,id=val.jenkinsName+'-'+param.name,floatingLabel,value=param.defaultValue,class=val.jenkinsName+'Param')
+                else if param.type == "booleanProperties"
+                    div(class='row left0 right0')
+                        div(class='col-sm-12 padding-left0px padding-right0px')
+                            paper-checkbox(id=val.jenkinsName+'-'+param.name,class=val.jenkinsName+'Param'+' col-sm-1 padding-right0px',checked=param.defaultValue)
+                            h4(style='padding-top:10px',class='col-sm-2 padding-left0px')=param.name
+                else if param.type == "choiceProperties"
+                    div(class='row left0 right0')
+                        div(class='col-sm-12 padding-left0px padding-right0px')
+                            h4=param.name
+                                paper-radio-group(class=val.jenkinsName+'Param'+' blue',id=val.jenkinsName+'-'+param.name,selected=param.choices[0])
+                                    each choice in param.choices
+                                        paper-radio-button(name=choice,label=choice)
+    div#navBarDiv
+        nav(class='navbar-default',role='navigation',style="background-color: #ffffff")
+            div.container-fluid
+                div.navbar-header
+                    div(class='row left0 right0')
+                        div(class='col-xs-4 col-sm-4 col-lg-3 logo-area voffset2 padding-left0px padding-right0px')
+                            div(class='col-xs-5 col-sm-5 link-cursor" ng-click="backToPortal()')
+                                a(href='/')
+                                    img(src='/images/execution_logo.jpg',class='img-rounded img-responsive',width='250px')
+                            div(class='col-xs-5 col-sm-5 voffset1')
+                                img(src='/images/smoke.jpg',class='img-rounded img-responsive')
+                        div(class='col-xs-7 col-sm-7')
+                            span(class='header-app-title') Riesling Smoke Test
+    div(class='row left0 right0')
+        div(class='col-sm-12 padding-left0px padding-right0px')
+            paper-tabs(selected='0',onchange='')
+                paper-tab(id='configTab') Configuration
+                paper-tab(id='historyTab') History
+                paper-tab(id='runningTab') Running
+    div(class='row left0 right0')
+        div(class='col-sm-12 padding-right0px padding-left0px')
+            smoke-job-block(upperBgColor='rgba(238, 238, 238, 0.57)')
+                div.upper-block
+                    div(class='row left0 right0 voffset3')
+                        div(class='col-sm-offset-4 col-sm-8 padding-left0px padding-right0px')
+                            h4(class="italic-font",style='font-size:3rem') Run Smoke Test On
+                            paper-radio-group(selected='Canary',id='runserver',style='font-size:2rem')
+                                paper-radio-button(name='Canary',label='Canary')
+                                paper-radio-button(name='Prod',label='Prod')
+                    div(class='row left0 right0')
+                        div(class='col-sm-offset-4 col-sm-8 padding-left0px padding-right0px')
+                            h4(class='col-sm-1 voffset3 ecomm-word italic-font',style="font-size:2.5rem") eComm
+                            paper-input(class='col-sm-1 padding-right0px',style='font-size:2rem',label='Major',floatingLabel,id='major')
+                            h4(class='col-sm-1 ecomm-period') .
+                            paper-input(class='col-sm-1 padding-left0px padding-right0px',style='font-size:2rem',label='Minor',floatingLabel,id='minor')
+                div(class='lower-block text-right')
+                    core-icon-button(class="green",icon="av:play-arrow",onclick="triggerAllJobs()")
+        each val,index in jobs
             div(class='col-sm-4 padding-left0px padding-right0px')
-                smoke-job-block(upperBgColor='#ffd9d1',lowerBgColor='#ff5252')
+                smoke-job-block(upperBgColor=color[index%6].upperBgColor,lowerBgColor=color[index%6].lowerBgColor)
                     div.upper-block
-                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
-                            div.flipper
-                                div.front
-                                    div(class='text-center')
-                                        h1(class='italic-font') Buy API
-                                div.back(style='background-color:white')
-                                    div(vertical layout)
-                                        div
-                                            paper-input(label='Event ID',floatingLabel)
+                        div(class='row left0 right0')
+                            div(class='col-sm-offset-11 col-sm-1 padding-left0px padding-right0px')
+                                paper-checkbox(id=val.jenkinsName+'-checkbox',class='col-sm-1 padding-right0px jobCheckBox',onchange='',checked)
+                            div(class='col-sm-12 text-center')
+                                h1(class='italic-font')=val.displayName
+                            div(class='col-sm-12 text-center' id=val.jenkinsName+'BuildsInfo')
+                                each eachBuild in val.lastBuilds
+                                        div(id=eachBuild.identifier+'BuildDiv')
+                                            if eachBuild.status == 'SUCCESS'
+                                                img(src='/images/checkmark.png',width='30px')
+                                            else if eachBuild.status == 'FAILURE'
+                                                img(src='/images/close.png',width='30px')
+                                            span(style='font-size:1.5rem;font-style:italic')=eachBuild.timestampsStr
+                                            if eachBuild.status == 'RUNNING'
+                                                img(src='/images/loading.gif',width='30px')
+                                            else
+                                                img(src='/images/clipboard.png',width='30px',style='cursor:pointer', onclick='openReport(\''+eachBuild.buildNo+'\',\''+val.jenkinsName+'\')')
+
                     div(class='lower-block text-right')
-                        core-icon-button(class="green",icon="settings",id='buyapi_setting' onclick="toggleDialog('buyApiConfigDialog')")
-                        core-icon-button(class="green",icon="av:play-arrow",id='buyapi')
-            div(class='col-sm-4 padding-left0px padding-right0px')
-                smoke-job-block(upperBgColor='#ffffbe',lowerBgColor='#ffeb3b')
-                    div.upper-block
-                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
-                            div.flipper
-                                div.front
-                                    div(class='text-center')
-                                        h1(class='italic-font') Sell Api
-                                div.back(style='background-color:white') Sell Configuration
-                    div(class='lower-block text-right')
-                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
-                        core-icon-button(class="green",icon="av:play-arrow")
-            div(class='col-sm-4 padding-left0px padding-right0px')
-                smoke-job-block(upperBgColor='#acffff',lowerBgColor='#03A9F4')
-                    div.upper-block
-                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
-                            div.flipper
-                                div.front
-                                    div(class='text-center')
-                                        h1(class='italic-font') Social Api
-                                div.back(style='background-color:white') Social Configuration
-                    div(class='lower-block text-right')
-                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
-                        core-icon-button(class="green",icon="av:play-arrow")
-        div(class='row left0 right0')
-            div(class='col-sm-12 padding-right0px padding-left0px')
-                smoke-job-block(upperBgColor='rgba(238, 238, 238, 0.57)')
-                    div.upper-block
-                        div(class='row voffset3')
-                            div(class='col-sm-offset-4 col-sm-8')
-                                h4(class="italic-font",style='font-size:3rem') Run Smoke Test On
-                                paper-radio-group(selected='Canary',id='runserver',style='font-size:2rem')
-                                    paper-radio-button(name='Canary',label='Canary')
-                                    paper-radio-button(name='Prod',label='Prod')
-                        div(class='row')
-                            div(class='col-sm-offset-4 col-sm-8 padding-left0px padding-right0px')
-                                h4(class='col-sm-1 voffset3 ecomm-word italic-font',style="font-size:2.5rem") eComm
-                                paper-input(class='col-sm-1 padding-right0px',style='font-size:2rem',label='Major',floatingLabel,id='major')
-                                h4(class='col-sm-1 ecomm-period') .
-                                paper-input(class='col-sm-1 padding-left0px padding-right0px',style='font-size:2rem',label='Minor',floatingLabel,id='minor')
-                    div(class='lower-block text-right')
-                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
-                        core-icon-button(class="green",icon="av:play-arrow")
-        div(class='row left0 right0')
-            div(class='col-sm-4 padding-left0px padding-right0px')
-                smoke-job-block(upperBgColor='#ffc2ff',lowerBgColor='#7e57c2')
-                    div.upper-block
-                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
-                            div.flipper
-                                div.front
-                                    div(class='text-center')
-                                        h1(class='italic-font') Buy Api
-                                div.back(style='background-color:white')
-                                    div(vertical layout)
-                                        div
-                                            paper-input(label='Event ID',floatingLabel)
-                    div(class='lower-block text-right')
-                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
-                        core-icon-button(class="green",icon="av:play-arrow",id='buyapi')
-            div(class='col-sm-4 padding-left0px padding-right0px')
-                smoke-job-block(upperBgColor='#b9f6ca',lowerBgColor='#1de9b6')
-                    div.upper-block
-                        div(class='flip-container',ontouchstart="this.classList.toggle('hover');")
-                            div.flipper
-                                div.front
-                                    div(class='text-center')
-                                        h1(class='italic-font') Sell Api
-                                div.back(style='background-color:white') Sell Configuration
-                    div(class='lower-block text-right')
-                        //core-icon(src="//www.polymer-project.org/images/icons/android.svg")
-                        core-icon-button(class="green",icon="av:play-arrow")
-            div(class='col-sm-4 padding-left0px padding-right0px')
-                smoke-job-block(upperBgColor='#ffd18c',lowerBgColor='#ffac30')
-                    div.upper-block
-                        div(style='text-align:center;',id='usui_front')
-                            h1 US UI
-                    div(class='lower-block text-right')
-                        core-icon-button(class="green",icon="settings",id='usui_setting' onclick="toggleDialog('usuiConfigDialog')")
-                        core-icon-button(class="green",icon="av:play-arrow")
+                        core-icon-button(class="green",icon="settings",id=val.jenkinsName+'-setting',onclick='toggleDialog(\''+val.jenkinsName+'-ConfigDialog\')')
+                        core-icon-button(class="green",icon="av:play-arrow",id=val.jenkinsName+'-api',onclick='triggerJob(\''+val.jenkinsName+'\')')
 block customjs
     script(type='text/javascript',src='/javascripts/main-page.js')
+
+    script.
+        var socket = io();
+        socket.on('buildComplete',function(msg){
+            $('#'+msg.identifier+'BuildDiv > img').attr('src','/images/clipboard.png').css('cursor','pointer').attr('onclick','openReport(\''+msg.buildNo+'\',\''+msg.jenkinsName+'\')');
+            $.notify(msg.identifier + " execution completed.",{clickToHide:true, position:'top center',className: 'success',autoHide:false});
+        })

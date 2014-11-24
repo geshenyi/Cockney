@@ -338,8 +338,7 @@ paper-tabs, core-toolbar {
 }
 
 paper-dialog {
-    width: 50%;
-    min-width: 430px;
+    min-width: 800px;
     height: auto;
 }
 
@@ -392,3 +391,157 @@ paper-button[autofocus] {
 .back {
     transform: rotateY(180deg);
 }
+
+#owl-demo .item {
+    background: #5FC848;
+    padding: 30px 0px;
+    margin: 10px;
+    color: #FFF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#owl-demo .clicked {
+    background: #989898;
+    padding: 30px 0px;
+    margin: 10px;
+    color: #FFF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#owl-demo .item:hover {
+    background: #989898;
+    text-decoration: underline;
+}
+
+.customNavigation {
+    text-align: center;
+}
+
+.customNavigation a {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.solid-border {
+    border: 1px solid #D7D7D7;
+}
+
+#historyDiv {
+    padding: 20px;
+}
+
+.trigger-btn {
+    background-color: #D7D7D7;
+    padding: 10px;
+}
+
+.twinkling-element {
+    -webkit-animation: twinkling 2s infinite ease-in-out;
+}
+
+#history-left-panel .clicked {
+    background-color: #989898;
+    padding: 10px;
+}
+
+.trigger-btn:hover {
+    background-color: #989898;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.trigger-string {
+    font-size: 2rem;
+    color: white;
+}
+
+#history-left-panel {
+    border-right: 1px solid lightgray;
+    padding-right: 10px;
+}
+
+.job-div {
+    font-size: 2rem;
+    text-align: center;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.job-div:hover {
+    background-color: #989898;
+    cursor: pointer;
+}
+
+.job-div.clicked {
+    background-color: #989898;
+}
+
+.jobsDiv {
+    display: inline-block;
+}
+
+.color0 {
+    background-color: #ffd9d1;
+}
+
+.color1 {
+    background-color: #ffffbe;
+}
+
+.color2 {
+    background-color: #acffff;
+}
+
+.color3 {
+    background-color: #ffc2ff;
+}
+
+.color4 {
+    background-color: #b9f6ca;
+}
+
+.color5 {
+    background-color: #ffd18c;
+}
+
+.build-field-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.build-field-value {
+    font-size: 1.5rem;
+    color: darkgray;
+    margin-top: 10px;
+}
+
+#buildDetailsField {
+    margin-top: 30px;
+    font-size: 2rem;
+    border-bottom: 1px solid #808080;
+    font-style: italic;
+}
+
+@-webkit-keyframes  twinkling {
+    0%{
+        opacity:0;
+    }
+    100%{
+        opacity:1;
+    }
+}
+

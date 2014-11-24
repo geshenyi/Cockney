@@ -1,0 +1,26 @@
+paper-dialog(heading='UK UI Config',transition='paper-dialog-transition-bottom',id='ukuiConfigDialog')
+    div(class='row')
+        div(class='col-sm-12')
+            paper-dropdown-menu(label="Browser")
+                paper-item(label="firefox")
+                paper-item(label="chrome")
+    div(class='row')
+        paper-checkbox(id='ukui_sellticket',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Sell Ticket
+    div(class='row')
+        paper-checkbox(id='usui_checkout',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Check Out Flow
+    div(class='row')
+        div(class='col-sm-12')
+            paper-input(label='Check Out Listing ID',floatingLabel,value='')
+    div(class='row')
+        paper-checkbox(id='ukui_ups',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-2 padding-left0px') Delivery By UPS
+        paper-checkbox(id='ukui_pdf',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') Delivery By PDF
+        paper-checkbox(id='ukui_abl',class='col-sm-1 padding-right0px')
+        h4(style='padding-top:10px',class='col-sm-3 padding-left0px') Auto Bulk Upload
+
+    div(class='row text-right voffset3')
+        paper-button(class='col-sm-offset-8 col-sm-2 padding-left0px padding-right0px',label='Close',affirmative)
+        paper-button(class='col-sm-2 padding-left0px padding-right0px text-left',label='Save',affirmative,autofocus)
