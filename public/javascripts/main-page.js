@@ -1,3 +1,5 @@
+var currentConsoleId = '';
+var currentConsoleView = '';
 /**
  * Created by ssge on 2014/9/22.
  */
@@ -116,9 +118,19 @@ triggerJob = function(jenkinsName){
         if(buildSize == 5){
             $('#'+eachJenkinsName+'BuildsInfo > div:last-child').remove();
         }
-        $("<div id='"+buildInfo.builds[i].params.identifier+"BuildDiv'><span style='font-size:1.5rem;font-style:italic'>Triggered at "+displayTriggerTime+"</span><img width='30px' src='/images/loading.gif'/></div>").prependTo('#'+eachJenkinsName+'BuildsInfo');
+        $("<div id='"+buildInfo.builds[i].params.identifier+"BuildDiv'><span style='font-size:1.5rem;font-style:italic'>Triggered at "+displayTriggerTime+"</span><img width='30px' class='left1 console-img' src='/images/window.png' onclick=openConsole(\'"+buildInfo.builds[i].params.identifier+"')><img class='loadingImg' width='30px' src='/images/loading.gif'/></div>").prependTo('#'+eachJenkinsName+'BuildsInfo');
     }
     triggerJobsPost(buildInfo);
+};
+
+rerunJob = function(jenkinsName, identifier){
+    var buildInfo = {};
+    buildInfo.jenkinsName = jenkinsName;
+    buildInfo.params = {identifier: identifier};
+    $('#'+identifier+'BuildDiv > .statusIcon').remove();
+    $('#'+identifier+'BuildDiv > .rerunIcon').replaceWith('<img src="/images/loading.gif" class="loadingImg" width="30px">');
+
+    triggerRerunJob(buildInfo);
 };
 
 function triggerAllJobs(){
@@ -151,7 +163,7 @@ function triggerAllJobs(){
         if(buildSize == 5){
             $('#'+eachJenkinsName+'BuildsInfo > div:last-child').remove();
         }
-        $("<div id='"+buildInfo.builds[i].params.identifier+"BuildDiv'><span style='font-size:1.5rem;font-style:italic'>Triggered at "+displayTriggerTime+"</span><img width='30px' src='/images/loading.gif'/></div>").prependTo('#'+eachJenkinsName+'BuildsInfo');
+        $("<div id='"+buildInfo.builds[i].params.identifier+"BuildDiv'><span style='font-size:1.5rem;font-style:italic'>Triggered at "+displayTriggerTime+"</span><img width='30px' class='left1' src='/images/window.png' onclick=openConsole(\'"+buildInfo.builds[i].params.identifier+"')><img class='loadingImg' width='30px' src='/images/loading.gif'/></div>").prependTo('#'+eachJenkinsName+'BuildsInfo');
     }
 
     triggerJobsPost(buildInfo);
@@ -177,9 +189,72 @@ triggerJobsPost = function(buildInfo){
     });
 };
 
+triggerRerunJob = function(buildInfo){
+    $.ajax({
+        type: "POST",
+        url: "/rerunJob",
+        data: JSON.stringify(buildInfo),
+        contentType: 'application/json'
+    }).done(function(msg){
+        console.log(msg);
+        for(var each in msg){
+            if(typeof each != 'undefined'){
+                if(msg[each] == 201 || msg[each] == 200){
+//                   $('#'+each+'BuildDiv > img').attr('src','/images/checkmark.png')
+                }else{
+                    $('#'+each+'BuildDiv > img').attr('src','/images/close.png')
+                }
+            }
+        }
+    });
+};
+
 openReport = function(buildNo, jenkinsName){
     $('#reportObject').attr('data','https://int.testing.stubcorp.dev/jenkins/view/Production/job/'+jenkinsName+'/'+buildNo+'/HTML_Report/');
     document.querySelector('#reportDialog').toggle();
+};
+
+openConsole = function(identifier){
+    currentConsoleId = identifier;
+    currentConsoleView = "RUNNING";
+    $('#'+identifier+'BuildDiv > .console-img').attr('src','/images/window.png');
+    $('#consoleContent').empty();
+    $('#consoleContent').append('<paper-button raised onclick="fetchConsoleLog(\''+identifier+'\')">Jenkins Console</paper-button>');
+    $('#consoleContent').append('<paper-button raised onclick="fetchRunningLog(\''+identifier+'\')">Running Console</paper-button>');
+    $('#consoleContent').append('<pre id="logBody" class="voffset3"></pre>');
+    document.querySelector('#consoleDialog').toggle();
+    fetchRunningLog(identifier);
+};
+
+fetchRunningLog = function(identifier){
+    currentConsoleView = 'RUNNING';
+    $('#logBody').empty();
+    $.ajax({
+        type: 'GET',
+        url: '/fetchLogs/'+identifier,
+        contentType: 'application/json'
+    }).done(function(msg){
+        console.log(msg);
+        if(typeof msg != 'undefined' && typeof msg[0].builds[0].logs !='undefined') {
+            for (var i = 0; i < msg[0].builds[0].logs.length; i++) {
+                $('#logBody').append('<div class="voffset3 running-log">' + msg[0].builds[0].logs[i] + '</div>');
+            }
+        }else{
+            $('#logBody').append('<div class="voffset3 running-log">No Running Logs</div>');
+        }
+    });
+};
+
+fetchConsoleLog = function(identifier){
+    currentConsoleView = "JENKINS";
+    $('#logBody').empty();
+    $.ajax({
+        type: 'GET',
+        url: '/consoleLog/'+identifier
+    }).done(function(msg){
+        console.log(msg);
+        $('#logBody').append('<pre class="voffset2">'+msg+'</pre>');
+    });
 };
 
 function getJenkinsNameFromId(id){

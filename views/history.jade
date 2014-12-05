@@ -1,5 +1,8 @@
 extends layout
 block content
+    paper-dialog(heading='Maui Report',trasition='paper-dialog-transition-center',id='reportDialog',width='1400px')
+        div#reportContent
+            object(type="text/html",data="",width="1400px",height="800px",style="overflow:auto;",id="reportObject")
     form(id='historyForm')
         core-toolbar#header-toolbar
             paper-menu-button

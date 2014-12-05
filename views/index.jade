@@ -4,6 +4,8 @@ block content
     paper-dialog(heading='Maui Report',trasition='paper-dialog-transition-center',id='reportDialog',width='1400px')
         div#reportContent
             object(type="text/html",data="",width="1400px",height="800px",style="overflow:auto;",id="reportObject")
+    paper-dialog(heading='Console',trasition='paper-dialog-transition-center',id='consoleDialog',width='1400px')
+        div(id="consoleContent",class="console-dialog")
     each val,index in jobParams
         paper-dialog(heading=val.displayName+' Config',transition='paper-dialog-transition-bottom',id=val.jenkinsName+'-ConfigDialog')
             each param in val.params
@@ -69,27 +71,30 @@ block content
                 div(class='lower-block text-right')
                     core-icon-button(class="green",icon="av:play-arrow",onclick="triggerAllJobs()")
         each val,index in jobs
-            div(class='col-sm-4 padding-left0px padding-right0px')
+            div(class='col-sm-6 col-xs-6 col-lg-4 padding-left0px padding-right0px')
                 smoke-job-block(upperBgColor=color[index%6].upperBgColor,lowerBgColor=color[index%6].lowerBgColor)
                     div.upper-block
                         div(class='row left0 right0')
                             div(class='col-sm-offset-11 col-sm-1 padding-left0px padding-right0px')
                                 paper-checkbox(id=val.jenkinsName+'-checkbox',class='col-sm-1 padding-right0px jobCheckBox',onchange='',checked)
                             div(class='col-sm-12 text-center')
-                                h1(class='italic-font')=val.displayName
-                            div(class='col-sm-12 text-center' id=val.jenkinsName+'BuildsInfo')
+                                h1(class='italic-font jobDisplayName')=val.displayName
+                            div(class='col-sm-12 build-div' id=val.jenkinsName+'BuildsInfo')
                                 each eachBuild in val.lastBuilds
                                         div(id=eachBuild.identifier+'BuildDiv')
                                             if eachBuild.status == 'SUCCESS'
-                                                img(src='/images/checkmark.png',width='30px')
-                                            else if eachBuild.status == 'FAILURE'
-                                                img(src='/images/close.png',width='30px')
-                                            span(style='font-size:1.5rem;font-style:italic')=eachBuild.timestampsStr
-                                            if eachBuild.status == 'RUNNING'
-                                                img(src='/images/loading.gif',width='30px')
+                                                img(class='statusIcon',src='/images/checkmark.png',width='30px')
                                             else
-                                                img(src='/images/clipboard.png',width='30px',style='cursor:pointer', onclick='openReport(\''+eachBuild.buildNo+'\',\''+val.jenkinsName+'\')')
-
+                                                img(class='statusIcon',src='/images/close.png',width='30px')
+                                            span(style='font-size:1.5rem;font-style:italic')=eachBuild.timestampsStr
+                                            img(id=eachBuild.identifier+'-consoleImg',src="/images/window.png",width='30px',class='left1 console-img',onclick='openConsole(\''+eachBuild.identifier+'\')')
+                                            if eachBuild.history != null
+                                                each eachBuildHistory in eachBuild.history
+                                                    img(src='/images/clipboard.png',width='30px',style='cursor:pointer', onclick='openReport(\''+eachBuildHistory.buildNo+'\',\''+val.jenkinsName+'\')')
+                                            if eachBuild.status == 'RUNNING'
+                                                img(src='/images/loading.gif',width='30px',class='loadingImg')
+                                            if val.rerunnable == true && eachBuild.status != 'SUCCESS'
+                                                img(class='rerunIcon',src='/images/reload.png',width='30px',onclick='rerunJob(\''+val.jenkinsName+'\',\''+eachBuild.identifier+'\')')
                     div(class='lower-block text-right')
                         core-icon-button(class="green",icon="settings",id=val.jenkinsName+'-setting',onclick='toggleDialog(\''+val.jenkinsName+'-ConfigDialog\')')
                         core-icon-button(class="green",icon="av:play-arrow",id=val.jenkinsName+'-api',onclick='triggerJob(\''+val.jenkinsName+'\')')
@@ -99,6 +104,19 @@ block customjs
     script.
         var socket = io();
         socket.on('buildComplete',function(msg){
-            $('#'+msg.identifier+'BuildDiv > img').attr('src','/images/clipboard.png').css('cursor','pointer').attr('onclick','openReport(\''+msg.buildNo+'\',\''+msg.jenkinsName+'\')');
+            console.log(msg);
+            if(msg.status == 'SUCCESS'){
+                $('#'+msg.identifier+'BuildDiv').prepend('<img class=\'statusIcon\' src=\'/images/checkmark.png\' width=\'30px\'>');
+            }else{
+                $('#'+msg.identifier+'BuildDiv').prepend('<img src=\'/images/close.png\' width=\'30px\'>');
+                $('#'+msg.identifier+'BuildDiv').append('<img src=\'/images/reload.png\' width=\'30px\' onclick="rerunJob(\''+msg.jenkinsName+'\',\''+msg.identifier+'\')">');
+            }
+            $('#'+msg.identifier+'BuildDiv > .loadingImg').attr('src','/images/clipboard.png').css('cursor','pointer').attr('onclick','openReport(\''+msg.buildNo+'\',\''+msg.jenkinsName+'\')');
             $.notify(msg.identifier + " execution completed.",{clickToHide:true, position:'top center',className: 'success',autoHide:false});
+        });
+        socket.on('logUpdate',function(msg){
+            $('#'+msg.identifier+'BuildDiv > .console-img').attr('src','/images/window_add.png');
+            if(msg.identifier == currentConsoleId && currentConsoleView == 'RUNNING'){
+                $('#logBody').append('<div class="voffset3 running-log">'+msg.content+'</div>');
+            }
         })

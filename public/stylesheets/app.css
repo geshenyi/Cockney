@@ -444,7 +444,7 @@ paper-button[autofocus] {
 }
 
 .trigger-btn {
-    background-color: #2196F3;
+    background-color: #42A5F5;
     padding: 10px;
 }
 
@@ -453,12 +453,12 @@ paper-button[autofocus] {
 }
 
 #history-left-panel .clicked {
-    background-color: #0D47A1;
+    background-color: #82B1FF;
     padding: 10px;
 }
 
 .trigger-btn:hover {
-    background-color: #0D47A1;
+    background-color: #82B1FF;
     padding: 10px;
     cursor: pointer;
 }
@@ -564,4 +564,41 @@ paper-dropdown {
     margin-top: 40px;
     height: 400px;
     margin-left: 50px;
+    background-color: white;
+}
+
+.console-dialog{
+    width: 1400px;
+    height: 800px;
+    margin-top: 20px;
+}
+
+.running-log {
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.build-div {
+    padding-left: 180px;
+}
+
+@media only screen and (max-width: 1800px) {
+    .build-div {
+        padding-left: 120px;
+    }
+
+}
+
+@media only screen and (max-width: 1500px) {
+    .build-div {
+        padding-left: 70px;
+    }
+
+}
+
+
+.jobDisplayName {
+    font-family: Roboto;
+    color: rgb(123, 123, 119);
+    font-weight: bolder;
 }

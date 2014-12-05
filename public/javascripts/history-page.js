@@ -183,6 +183,19 @@ assembleJobDetails = function (jobName, triggerDetails) {
                  "<span>"+triggerDetails[0].runserver+"</span>"+
                  "</div>"+
                  "</div>";
+    if(selectedJob.status == 'SUCCESS'){
+        jobDetails = jobDetails +
+                "<div class='row left0 right0'>"+
+                "<div class='col-lg-4 build-field-name'>"+
+                "<span>Maui Report</span>"+
+                "</div>"+
+                "<div class='col-lg-4 build-field-value'>"+
+                "<img src='images/clipboard.png' width='30px' style='cursor:pointer' onclick=\"openReport('"+selectedJob.buildNo+"','"+selectedJob.jenkinsName+"')\"/>"+
+                "</div>"+
+                "</div>";
+    }
+
+
     return jobDetails;
 };
 
@@ -227,3 +240,8 @@ function getDisplayTriggerTime(timestamp){
     var millisecond = timestamp.substring(14,17);
     return year+s1+month+s1+date+' '+hour+s2+minute+s2+second+s2+millisecond;
 }
+
+openReport = function(buildNo, jenkinsName){
+    $('#reportObject').attr('data','https://int.testing.stubcorp.dev/jenkins/view/Production/job/'+jenkinsName+'/'+buildNo+'/HTML_Report/');
+    document.querySelector('#reportDialog').toggle();
+};

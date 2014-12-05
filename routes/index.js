@@ -2,6 +2,7 @@ var express = require('express');
 var http = require('http');
 var rest = require('../node_modules/restler');
 var router = express.Router();
+var async = require('async');
 var XMLMapping = require('xml-mapping');
 var jenkinsApi = require('jenkinsService');
 var MongoService = require('MongoService');
@@ -54,6 +55,7 @@ docsHandler = function(jenkinsName, docs){
                 eachBuildObj.status = docs[i].builds[j].status;
                 eachBuildObj.identifier = docs[i].builds[j].params.identifier;
                 eachBuildObj.buildNo = docs[i].builds[j].buildNo;
+                eachBuildObj.history = docs[i].builds[j].history;
                 retDoc.push(eachBuildObj);
                 break;
             }
@@ -106,7 +108,7 @@ router.get('/', function (req, res) {
         for (var i =0; i < docs.length; i++) {
             jobs = [
                     {jenkinsName: 'TestJob', appName: 'tj1', displayName: 'Test Job1'},
-                    {jenkinsName: 'TestJenkins2', appName: 'tj2', displayName: 'Test Jenkins2'}
+                    {jenkinsName: 'TestJenkins2', appName: 'tj2', displayName: 'Test Jenkins2',rerunnable: true}
                 ];
 //            jobs.push(new Job(docs[i].jenkinsName, '', docs[i].displayName));
         }
@@ -123,9 +125,21 @@ router.get('/', function (req, res) {
 
 router.post('/testNotification', function (req, res) {
     console.log(req.body);
-    mongos.updateBuildStatus(req.body);
-    io.sockets.emit('buildComplete',{jenkinsName: req.body.name, status: req.body.build.status, identifier: req.body.build.parameters.identifier, buildNo: req.body.build.number});
+    if(req.body.build.phase == 'STARTED') {
+        mongos.updateBuildNo(req.body);
+    }
+    if(req.body.build.phase == 'COMPLETED') {
+        mongos.updateBuildStatus(req.body);
+        io.sockets.emit('buildComplete', {jenkinsName: req.body.name, status: req.body.build.status, identifier: req.body.build.parameters.identifier, buildNo: req.body.build.number});
+    }
+    res.status(200).end();
 
+});
+
+router.post('/logNotification', function(req, res){
+    console.log(req.body);
+    res.status(200).end();
+    io.sockets.emit('logUpdate', {identifier: req.body.identifier, content: req.body.content});
 });
 
 router.post('/triggerBatchJobs',function(req,res){
@@ -147,6 +161,16 @@ router.post('/triggerBatchJobs',function(req,res){
     }
 });
 
+router.post('/rerunJob', function(req,res){
+    mongos.updateRerunStatus(req.body);
+    var completeHandler = function(jenkinsName, responseCode, identifier){
+        var responseJson = {};
+        responseJson[identifier] = responseCode;
+        res.status(200).json(responseJson);
+    };
+    jenkinsApi.triggerJob(serverUrl, req.body.jenkinsName, req.body.params, completeHandler);
+});
+
 router.post('/triggerJob/:jobName', function (req, res) {
     console.log(req.params.jobName);
     rest.post("http://localhost:8080/jenkins/job/TestJob/buildWithParameters", {data: {testParam: 'testFromNode'}}).on('complete', function (data, response) {
@@ -160,10 +184,43 @@ router.get('/running', function (req, res) {
     res.render('running', {});
 });
 
+router.get('/fetchLogs/:identifier', function(req, res){
+    console.log(req.params.identifier);
+    callback = function(err, docs){
+        console.log(docs);
+        res.status(200).json(docs);
+    };
+    mongos.fetchLogs(req.params.identifier, callback);
+});
+
 
 router.get('/trigger', function (req, res) {
 
     res.render('error', {});
+});
+
+router.get('/consoleLog/:identifier', function(req, res){
+    console.log(req.params.identifier);
+
+    async.waterfall([function (callback) {
+        completeHandler = function(err, docs){
+            console.log(docs);
+            if(typeof docs == 'undefined'){
+                res.status('500').end();
+            }else {
+                callback(null, {jenkinsName: docs[0].builds[0].jenkinsName, buildNo: docs[0].builds[0].buildNo});
+            }
+        };
+        mongos.fetchLogs(req.params.identifier, completeHandler)
+    }, function (result, callback) {
+        fetchConsoleLogCompleted = function(err, response){
+          callback(null, response)
+        };
+        jenkinsApi.fetchConsoleLog(serverUrl, result.jenkinsName, result.buildNo, fetchConsoleLogCompleted);
+    }], function (err, result) {
+        res.status(200).send(result);
+    });
+
 });
 
 module.exports = router;
